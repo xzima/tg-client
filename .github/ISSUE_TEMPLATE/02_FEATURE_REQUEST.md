@@ -1,8 +1,8 @@
 ---
-name: Feature Request
+name: ⭐ Feature Request
 about: Suggest an idea for this project
 title: "feat: "
-labels: "enhancement"
+labels: "new-feature"
 assignees: ""
 ---
 
@@ -23,6 +23,10 @@ assignees: ""
 **Related Code**
 
 <!-- If you are able to illustrate the bug or feature request with an example, please provide it here. -->
+
+```
+insert short code snippets here
+```
 
 **Additional Context**
 
