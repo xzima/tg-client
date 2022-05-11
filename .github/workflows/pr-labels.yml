@@ -26,6 +26,7 @@ jobs:
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           valid-labels: >-
+            init-repo,
             hotfix, bug, new-feature, 
             documentation, ci, 
             refactor, performance, security,
