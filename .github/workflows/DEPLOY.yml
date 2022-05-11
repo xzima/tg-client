@@ -63,19 +63,19 @@ jobs:
       - name: Run tests
         run: ./mvnw clean package
 
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v3.0.0
-#        with:
-#          files: target/site/jacoco/jacoco.xml
-#          env_vars: RUNNER_OS,JAVA_HOME
-#          verbose: true
-#          fail_ci_if_error: true
-#
-#      - name: Publish Unit Test Results
-#        uses: EnricoMi/publish-unit-test-result-action@v1
-#        if: always()
-#        with:
-#          files: "target/surefire-reports/TEST-*.xml"
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3.0.0
+        with:
+          files: target/site/jacoco/jacoco.xml
+          env_vars: RUNNER_OS,JAVA_HOME
+          verbose: true
+          fail_ci_if_error: true
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: "target/surefire-reports/TEST-*.xml"
 
   release:
     needs: [ test ]

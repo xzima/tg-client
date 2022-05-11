@@ -6,6 +6,7 @@
 
 [![GitHub](https://img.shields.io/github/license/xzima/tg-client?style=for-the-badge)](/LICENSE.txt)
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/xzima/tg-client/CI/master?style=for-the-badge)](../../actions/workflows/DEPLOY.yml)
+[![Codecov branch](https://img.shields.io/codecov/c/github/xzima/tg-client/master?style=for-the-badge)](https://app.codecov.io/gh/xzima/tg-client/)
 
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/xzima/tg-client?style=for-the-badge)](../../releases)
 [![GitHub repo size](https://img.shields.io/github/repo-size/xzima/tg-client?style=for-the-badge)](../../)
