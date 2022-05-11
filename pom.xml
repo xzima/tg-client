@@ -14,7 +14,7 @@
     <description>A Telegram Bot API Client</description>
 
     <url>https://github.com/xzima/tg-client</url>
-    <inceptionYear>2021</inceptionYear>
+    <inceptionYear>2022</inceptionYear>
 
     <licenses>
         <license>
@@ -88,18 +88,6 @@
         <plugin.enforcer.version>3.0.0</plugin.enforcer.version>
         <plugin.source.version>3.2.1</plugin.source.version>
         <!-- license -->
-        <license.excludedScopes>test</license.excludedScopes>
-        <license.includeOptional>false</license.includeOptional>
-        <license.outputDirectory>${project.basedir}</license.outputDirectory>
-        <license.thirdPartyFilename>LICENSES_THIRD_PARTY.txt</license.thirdPartyFilename>
-        <!-- For Licenses which are "Unknown" by Maven, load them from a properties file -->
-        <license.useMissingFile>true</license.useMissingFile>
-        <license.missingFile>.github/license/LICENSES_THIRD_PARTY.properties</license.missingFile>
-        <!-- License names that should all be merged into the *first* listed name -->
-        <license.licenseMergesFile>.github/license/LICENSE_MERGES.txt</license.licenseMergesFile>
-        <!-- Use the template which groups all dependencies by their License type (easier to read!). -->
-        <!-- SEE: https://github.com/mojohaus/license-maven-plugin/tree/master/src/main/resources/org/codehaus/mojo/license -->
-        <license.fileTemplate>.github/license/LICENSES_THIRD_PARTY_groupByLicense.ftl</license.fileTemplate>
         <plugin.license.version>4.1</plugin.license.version>
         <license.header>.github/license/LICENSE_HEADER.txt</license.header>
         <license.strictCheck>true</license.strictCheck>
@@ -241,8 +229,7 @@
                                 <resource>
                                     <directory>${project.basedir}</directory>
                                     <includes>
-                                        <include>LICENSES_THIRD_PARTY.txt</include>
-                                        <include>LICENSE.txt</include>
+                                        <include>LICENSE</include>
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
