@@ -1,0 +1,36 @@
+---
+# see https://github.com/jesusvasquez333/verify-pr-label-action
+name: PR Labels
+
+on:
+  pull_request:
+    types: [ opened, labeled, unlabeled, synchronize ]
+
+jobs:
+  pr_labels:
+    if: ${{ github.event.pull_request.state != 'closed' }}
+    name: 🏭 Verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug action
+        uses: hmarr/debug-action@v2.0.1
+      - name: Debug echo
+        env:
+          JOB_CONTENT: "${{ toJson(job) }}"
+          STEPS_CONTENT: "${{ toJson(steps) }}"
+          GITHUB_CONTENT: "${{ toJson(github) }}"
+        run: "echo 'Debug echo'"
+
+      - name: 🏷 Verify PR has a valid label
+        uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          valid-labels: >-
+            init-repo,
+            hotfix, bug, new-feature, 
+            documentation, ci, 
+            refactor, performance, security,
+            dependencies, gitflow
+          invalid-labels: >-
+            question, enhancement, maintenance
+          disable-reviews: true

@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+
+    <groupId>com.github.xzima</groupId>
+    <artifactId>tg-client</artifactId>
+    <version>SNAPSHOT</version>
+
+    <name>Tg Client</name>
+    <description>A Telegram Bot API Client</description>
+
+    <url>https://github.com/xzima/tg-client</url>
+    <inceptionYear>2022</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Alex Zima</name>
+            <email>xzima@ro.ru</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!-- https://maven.apache.org/pom.html#contributors <contributors></contributors>-->
+
+    <scm>
+        <connection>scm:git:git@github.com:xzima/tg-client.git</connection>
+        <developerConnection>scm:git:git@github.com:xzima/tg-client.git</developerConnection>
+        <url>git@github.com:xzima/tg-client.git</url>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <name>JitPack</name>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
+    <properties>
+        <java.version>11</java.version>
+        <maven.version>3.8.5</maven.version>
+        <encoding>UTF-8</encoding>
+        <!--=========================================================================================================-->
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+        <!-- kotlin -->
+        <kotlin.version>1.6.21</kotlin.version>
+        <kotlin.code.style>official</kotlin.code.style>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
+        <plugin.jacoco.version>0.8.8</plugin.jacoco.version>
+        <!-- test -->
+        <plugin.test.version>2.22.2</plugin.test.version>
+        <!-- Detailed logs in surefire-reports/testName-output.txt instead of stdout -->
+        <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
+        <!-- Ensure full stacktrace is logged (when errors occur) -->
+        <trimStackTrace>false</trimStackTrace>
+        <!--=========================================================================================================-->
+        <!-- DEPENDENCIES -->
+        <kotest.version>5.3.0</kotest.version>
+        <jna.version>5.9.0</jna.version>
+        <!--=========================================================================================================-->
+        <plugin.resources.version>3.2.0</plugin.resources.version>
+        <plugin.install.version>2.5.2</plugin.install.version>
+        <plugin.deploy.version>2.8.2</plugin.deploy.version>
+        <plugin.clean.version>3.2.0</plugin.clean.version>
+        <plugin.jar.version>3.2.2</plugin.jar.version>
+        <plugin.enforcer.version>3.0.0</plugin.enforcer.version>
+        <plugin.source.version>3.2.1</plugin.source.version>
+        <!-- license -->
+        <plugin.license.version>4.1</plugin.license.version>
+        <license.header>.github/license/LICENSE_HEADER.txt</license.header>
+        <license.strictCheck>true</license.strictCheck>
+    </properties>
+
+    <build>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <plugins>
+            <!-- Use to enforce particular versions of Java and Maven,
+                 and to ensure no conflicting dependencies -->
+            <plugin>
+                <!-- https://maven.apache.org/enforcer/enforcer-rules -->
+                <!-- https://blogs.oracle.com/developers/post/mastering-maven-the-enforcer-plugin -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${plugin.enforcer.version}</version>
+                <configuration>
+                    <rules>
+                        <requireJavaVersion>
+                            <version>${java.version}</version>
+                        </requireJavaVersion>
+                        <requireMavenVersion>
+                            <version>[${maven.version},)</version>
+                        </requireMavenVersion>
+                        <bannedDependencies>
+                            <excludes>
+                                <exclude>log4j:log4j</exclude>
+                            </excludes>
+                        </bannedDependencies>
+                        <dependencyConvergence/>
+                        <banDuplicatePomDependencyVersions/>
+                    </rules>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to compile Kotlin classes -->
+            <plugin>
+                <!-- https://kotlinlang.org/docs/maven.html -->
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to package all JARs -->
+            <plugin>
+                <!-- https://maven.apache.org/shared/maven-archiver/ -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${plugin.jar.version}</version>
+            </plugin>
+            <!-- Used to run Unit tests -->
+            <plugin>
+                <!-- https://maven.apache.org/surefire/maven-surefire-plugin/test-mojo.html -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${plugin.test.version}</version>
+            </plugin>
+            <!-- Used for code coverage reporting -->
+            <plugin>
+                <!-- https://www.eclemma.org/jacoco/trunk/doc/maven.html -->
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${plugin.jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- clean -->
+            <plugin>
+                <!-- https://maven.apache.org/plugins/maven-clean-plugin/ -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${plugin.clean.version}</version>
+            </plugin>
+            <!-- deploy -->
+            <plugin>
+                <!-- https://maven.apache.org/plugins/maven-deploy-plugin/ -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${plugin.deploy.version}</version>
+            </plugin>
+            <!-- install -->
+            <plugin>
+                <!-- https://maven.apache.org/plugins/maven-install-plugin/ -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>${plugin.install.version}</version>
+            </plugin>
+            <!-- resource -->
+            <plugin>
+                <!-- https://maven.apache.org/plugins/maven-resources-plugin/ -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${plugin.resources.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}</directory>
+                                    <includes>
+                                        <include>LICENSE</include>
+                                    </includes>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to validate License Headers (see build process) -->
+            <plugin>
+                <!-- https://mycila.carbou.me/license-maven-plugin/ -->
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${plugin.license.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.mycila</groupId>
+                        <artifactId>license-maven-plugin-git</artifactId>
+                        <!-- make sure you use the same version as license-maven-plugin -->
+                        <version>${plugin.license.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <mapping>
+                        <kt>JAVADOC_STYLE</kt>
+                        <kts>JAVADOC_STYLE</kts>
+                    </mapping>
+                    <excludes>
+                        <exclude>docs/**</exclude>
+                        <exclude>**/.okhttpcache/**</exclude>
+                        <exclude>**/.run/**</exclude>
+                        <exclude>**/src/test/resources/**</exclude>
+                        <exclude>**/src/test/data/**</exclude>
+                        <exclude>**/src/main/license/**</exclude>
+                        <exclude>**/src/main/changelog/**</exclude>
+                        <exclude>pom.xml</exclude>
+                        <exclude>system.properties</exclude>
+                        <exclude>Procfile</exclude>
+                        <exclude>*.db</exclude>
+                        <exclude>**/META-INF/**</exclude>
+                        <exclude>**/robots.txt</exclude>
+                        <exclude>**/LICENSE*</exclude>
+                        <exclude>**/README*</exclude>
+                        <exclude>**/readme*</exclude>
+                        <exclude>**/.gitignore</exclude>
+                        <exclude>**/*.cfg</exclude>
+                        <exclude>**/*.conf</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <!-- Used to generate JavaDocs for new releases (see release profile). -->
+            <plugin>
+                <!-- https://github.com/Kotlin/dokka -->
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <configuration>
+                    <dokkaPlugins>
+                        <plugin>
+                            <groupId>org.jetbrains.dokka</groupId>
+                            <artifactId>javadoc-plugin</artifactId>
+                            <version>${kotlin.version}</version>
+                        </plugin>
+                    </dokkaPlugins>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadocJar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to generate source JARs for new releases (see release profile). -->
+            <plugin>
+                <!-- https://maven.apache.org/plugins/maven-source-plugin/ -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${plugin.source.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+        </dependency>        <!-- test -->
+        <!-- kotest https://kotest.io/ -->
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-runner-junit5-jvm</artifactId>
+            <version>${kotest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-assertions-core-jvm</artifactId>
+            <version>${kotest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.kotest</groupId>
+                <artifactId>kotest-assertions-shared-jvm</artifactId>
+                <version>${kotest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.kotest</groupId>
+                <artifactId>kotest-framework-api-jvm</artifactId>
+                <version>${kotest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-bom</artifactId>
+                <version>${kotlin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>5.8.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna</artifactId>
+                <version>${jna.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna-platform</artifactId>
+                <version>${jna.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
