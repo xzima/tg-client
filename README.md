@@ -5,9 +5,11 @@
 <br />
 
 [![GitHub](https://img.shields.io/github/license/xzima/tg-client?style=for-the-badge)](/LICENSE.txt)
+
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/xzima/tg-client/CI/master?style=for-the-badge)](../../actions/workflows/DEPLOY.yml)
 [![Codecov branch](https://img.shields.io/codecov/c/github/xzima/tg-client/master?style=for-the-badge)](https://app.codecov.io/gh/xzima/tg-client/)
 
+[![JitPack](https://img.shields.io/jitpack/v/github/xzima/tg-client?style=for-the-badge)](https://jitpack.io/#xzima/tg-client)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/xzima/tg-client?style=for-the-badge)](../../releases)
 [![GitHub repo size](https://img.shields.io/github/repo-size/xzima/tg-client?style=for-the-badge)](../../)
 
@@ -24,7 +26,6 @@
 - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
-- [Usage](#usage)
 - [Roadmap](#roadmap)
 - [Support](#support)
 - [Contributing](#contributing)
@@ -37,16 +38,11 @@
 
 ## About
 
-> **[?]**
-> Provide general information about your project here.
-> What problem does it (intend to) solve?
-> What is the purpose of your project?
-> Why did you undertake it?
-> You don't have to answer all the questions -- just the ones relevant to your project.
+**Tg Client** - yet another Telegram Bot API Client for Kotlin based on [TelegramBots](https://github.com/rubenlagus/TelegramBots).
 
 ### Built With
 
-JVM Kotlin Maven
+JVM Kotlin Maven JitPack
 
 ## Getting Started
 
@@ -56,14 +52,7 @@ JVM Kotlin Maven
 
 ### Installation
 
-> **[?]**
-> Describe how to install and get started with the project.
-
-## Usage
-
-> **[?]**
-> How does one go about using it?
-> Provide various use cases and code examples here.
+To get a Git project into your build, see [How to](https://jitpack.io/#xzima/tg-client) on [JitPack](https://jitpack.io).
 
 ## Roadmap
 
@@ -115,3 +104,5 @@ See [LICENSE](LICENSE) for more information.
 - [Telegram Bot API](https://core.telegram.org/bots/api)
 - [Git changelog command line](https://github.com/tomasbjerre/git-changelog-command-line)
 - [semantic-release](https://semantic-release.gitbook.io/semantic-release/)
+- [TelegramBots](https://github.com/rubenlagus/TelegramBots)
+- [JitPack](https://jitpack.io)
